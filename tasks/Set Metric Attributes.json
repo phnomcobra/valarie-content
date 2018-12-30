@@ -1,0 +1,69 @@
+{
+    "58ed3813-4dd9-b794-ad1e-40e378eab756": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\n\nfrom valarie.dao.document import Collection\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def execute(self, cli):\n        try:\n            metrics = Collection(\"metrics\")\n            metrics.create_attribute(\"type\", '[\"type\"]')\n            \n            self.status = STATUS_SUCCESS\n        except:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_FAILURE\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "58ed3813-4dd9-b794-ad1e-40e378eab756"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "58ed3813-4dd9-b794-ad1e-40e378eab756"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "58ed3813-4dd9-b794-ad1e-40e378eab756"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "58ed3813-4dd9-b794-ad1e-40e378eab756"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "58ed3813-4dd9-b794-ad1e-40e378eab756"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [
+            "25242bdb-9db1-e016-35a0-1b5d03cde01d"
+        ], 
+        "icon": "/images/task_icon.png", 
+        "name": "Set Metric Attributes", 
+        "objuuid": "58ed3813-4dd9-b794-ad1e-40e378eab756", 
+        "parent": "1dd45b8b-eeca-4240-3960-868ad6adc556", 
+        "type": "task"
+    }
+}

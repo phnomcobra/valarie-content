@@ -1,0 +1,72 @@
+{
+    "07580649-0e79-0707-e805-b27d91b63104": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\n\nfrom time import time\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def execute(self, cli):\n        try:\n            events = cli.AGTCollection(\"events\")\n            \n            st = time()\n            N = 10\n            \n            for n in range(N):\n                event = events.get_object(\"07580649-0e79-0707-e805-b27d91b63104\")\n                event.destroy()\n\n            et = time() - st\n            self.output.append(\"{0} object load/stores per second.\".format(N / et))\n            \n            self.status = STATUS_SUCCESS\n        except Exception:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_EXCEPTION\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "07580649-0e79-0707-e805-b27d91b63104"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "07580649-0e79-0707-e805-b27d91b63104"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "07580649-0e79-0707-e805-b27d91b63104"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "07580649-0e79-0707-e805-b27d91b63104"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "07580649-0e79-0707-e805-b27d91b63104"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [
+            "9857ace7-7c8e-dc1c-e478-da367133da54", 
+            "698dac30-d81c-a897-919e-9b4adb1c1b3e", 
+            "b9005a2d-d766-d4c5-3649-13e777b5ce40", 
+            "9083b500-7119-7191-aeb8-1ab873d2e5d2"
+        ], 
+        "icon": "/images/task_icon.png", 
+        "name": "object benchmark", 
+        "objuuid": "07580649-0e79-0707-e805-b27d91b63104", 
+        "parent": "4c387018-38a6-ae44-e79d-8317eaa50899", 
+        "type": "task"
+    }
+}

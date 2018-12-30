@@ -1,0 +1,69 @@
+{
+    "dd449480-8506-81bb-c99c-2149a335713b": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\nimport hashlib\n\nfrom valarie.controller.messaging import add_message\nfrom valarie.controller.flags import touch_flag\n\nfrom valarie.dao.document import Collection\nfrom valarie.dao.utils import sucky_uuid\n\nfrom valarie.model.datastore import File, create_binary_file\nfrom valarie.model.textfile import create_text_file\nfrom valarie.model.container import create_container\n                                 \nPARENT_UUID = \"cd971363-742a-418e-129b-6277b517646b\"\n\nREMOTE_FS_PATH = \"/opt/dev5\"\n\nTXT_EXTENSIONS = [\"py\", \"html\", \"pem\", \"js\", \"md\", \"css\", \"json\", \"map\", \"csv\", \"txt\"]\nBIN_EXTENSIONS = [\"png\", \"svg\", \"gif\", \"jpg\", \"ttf\", \"woff\", \"woff2\", \"eot\"]\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n        \n        self.containers = {\n            \"containers\" : {},\n            \"objuuid\" : PARENT_UUID\n        }\n    \n    def execute(self, cli):\n        try:\n            # LIFT DIRECTORIES INTO INVENTORY\n            status, stdout, stderr = cli.system(\"find {} -type d\".format(REMOTE_FS_PATH), return_tuple = True)\n            if status:\n                self.output.append(str(stderr))\n                self.status = STATUS_FAILURE\n                return self.status\n            else:\n                for dname in stdout.strip().split(\"\\n\"):\n                    current_container = self.containers\n                    \n                    sdnames = dname.strip().split(\"/\")\n                    \n                    parent_objuuid = self.containers[\"objuuid\"]\n                    \n                    for sdname in sdnames[len(REMOTE_FS_PATH.split(\"/\")) - 1:]:\n                        if sdname not in current_container[\"containers\"]:\n                            current_container[\"containers\"][sdname] = {\n                                \"containers\" : {},\n                                \"objuuid\" : sucky_uuid()\n                            }\n                            \n                            create_container(parent_objuuid, \\\n                                             sdname, \\\n                                             current_container[\"containers\"][sdname][\"objuuid\"])\n                            \n                            self.output.append(dname)\n                            add_message(dname)\n\n                        parent_objuuid = current_container[\"containers\"][sdname][\"objuuid\"]\n                        \n                        current_container = current_container[\"containers\"][sdname]\n            \n            \n            \n                \n            # LIFT FILES INTO INVENTORY\n            status, stdout, stderr = cli.system(\"find {} -type f\".format(REMOTE_FS_PATH), return_tuple = True)\n            if status:\n                self.output.append(str(stderr))\n                self.status = STATUS_FAILURE\n                return self.status\n            else:\n                for fname in stdout.strip().split(\"\\n\"):\n                    current_container = self.containers\n                    \n                    sfnames = fname.strip().split(\"/\")\n                    \n                    parent_objuuid = self.containers[\"objuuid\"]\n                    \n                    for i, sfname in enumerate(sfnames[len(REMOTE_FS_PATH.split(\"/\")) - 1:]):\n                        if i == len(sfnames[len(REMOTE_FS_PATH.split(\"/\")) - 1:]) - 1:\n                            fext = sfname.split('.')[-1]\n                            \n                            if fext in TXT_EXTENSIONS:\n                                tf = create_text_file(parent_objuuid, sfname)\n                                tf.object[\"body\"] = cli.readf(fname)\n                                tf.set()\n                                \n                                self.output.append(fname)\n                                add_message(fname)\n                            elif fext in BIN_EXTENSIONS:\n                                # binary file inventory object\n                                bf = create_binary_file(parent_objuuid, sfname)\n                                \n                                # data store file\n                                df = File(bf.object[\"sequuid\"])\n                                \n                                sha1hash = hashlib.sha1()\n                                \n                                chunk = cli.readbf(fname)\n                                df.write(chunk)\n                                sha1hash.update(chunk)\n\n                                df.close()\n\n                                bf.object[\"size\"] = df.size()\n                                bf.object[\"sha1sum\"] = sha1hash.hexdigest()\n                                bf.set()\n                                \n                                self.output.append(fname)\n                                add_message(fname)\n                        else:\n                            parent_objuuid = current_container[\"containers\"][sfname][\"objuuid\"]\n                        \n                            current_container = current_container[\"containers\"][sfname]\n                        \n            touch_flag(\"inventoryState\")\n            self.status = STATUS_SUCCESS\n        except:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_EXCEPTION\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "dd449480-8506-81bb-c99c-2149a335713b"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "dd449480-8506-81bb-c99c-2149a335713b"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "dd449480-8506-81bb-c99c-2149a335713b"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "dd449480-8506-81bb-c99c-2149a335713b"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "dd449480-8506-81bb-c99c-2149a335713b"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [
+            "9857ace7-7c8e-dc1c-e478-da367133da54"
+        ], 
+        "icon": "/images/task_icon.png", 
+        "name": "Import Unix File System", 
+        "objuuid": "dd449480-8506-81bb-c99c-2149a335713b", 
+        "parent": "4c387018-38a6-ae44-e79d-8317eaa50899", 
+        "type": "task"
+    }
+}
