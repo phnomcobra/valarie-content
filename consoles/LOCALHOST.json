@@ -1,0 +1,36 @@
+{
+    "0eae0d80-e7a8-0167-e2bd-0cc276c451bd": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nfrom subprocess import Popen, PIPE\n\nclass Console:\n    def __init__(self, **kargs):\n        self.__buffer = 'Local Host Test Terminal: '\n    \n    def get_remote_host(self):\n        return \"127.0.0.1\"\n    \n    def system(self, command, return_tuple = False, sudo_command = True):\n        process = Popen(command, shell = True, stdout = PIPE, stderr = PIPE)\n        output_buffer, stderr_buffer = process.communicate()\n        status = process.returncode\n        \n        if return_tuple:\n            return status, output_buffer, stderr_buffer\n        elif 0 != int(status):\n            return '{0}<font color=\"red\"><br>{1}</font><br>'.format(output_buffer, stderr_buffer)\n        else:\n            return output_buffer\n    \n    def send(self, input_buffer):\n        self.__buffer += input_buffer\n        pass\n    \n    def recv(self):\n        output_buffer = self.__buffer\n        self.__buffer = ''\n        return output_buffer\n    \n    def putf(self, file):\n        self.send(\"filename: {0}\\n\".format(file.filename))\n        self.send(\"{0}\\n\".format(file.file.read()))", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "25adc998-7112-4670-67ab-3ad78a94e9ca", 
+        "context": {
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "0eae0d80-e7a8-0167-e2bd-0cc276c451bd"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit console", 
+                    "params": {
+                        "objuuid": "0eae0d80-e7a8-0167-e2bd-0cc276c451bd"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }
+        }, 
+        "icon": "/images/console_icon.png", 
+        "name": "LOCALHOST", 
+        "objuuid": "0eae0d80-e7a8-0167-e2bd-0cc276c451bd", 
+        "parent": "69b4d682-21e5-12a1-2771-d14b728a57bb", 
+        "type": "console"
+    }
+}
