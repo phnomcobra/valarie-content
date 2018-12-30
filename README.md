@@ -4,29 +4,13 @@ ValARIE (Validation and Remote Interaction Environment) is a simple web based ID
 automation system used for software development, deployment, testing, and mining. The
 backend is based on CherryPy and is written entirely in Python. 
 
-## Installation
+# ValARIE Content
 
-ValARIE Web App is best leveraged through the use of `virtualenv` and is the recommended method
-for running, testing, and contributing. 
-
-Install virtualenv: `pip install virtualenv`
-
-Create a virtualenv: `virtualenv env`
-
-Activate virtualenv: `env/bin/activate`
-
-Install project requirements: `pip install -r requirements.txt` 
-
-Cut some certs: `openssl req -x509 -newkey rsa:4096 -keyout privkey.pem -out cert.pem -days 365 -nodes`
-
-Deposit certs into SSL sub-directory
+This repository is for putting inventory objects under source control. The JSON files are directly importable into the ValARIE's inventory while the .py files are the unescaped code bodies for consoles and tasks.
 
 ## Usage
-Fire up the CherryPy server: `python start.py`
 
-Browse to the URL CherryPy is hosting on
-
-The default logon is root/root
+The JSON files are directly importable into the ValARIE's inventory while the .py files are the unescaped code bodies for consoles and tasks.
 
 ## Contributing
 
@@ -38,7 +22,7 @@ The default logon is root/root
 
 ## History
 
-This project is a rewrite of the CNG-Playground and Dev5 code bases.
+TODO: Write history
 
 ## Credits
 
