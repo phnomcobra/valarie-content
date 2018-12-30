@@ -1,0 +1,52 @@
+{
+    "1223bed3-e193-aeb1-81c0-bd57a2b579ca": {
+        "abbreviation": "WARN", 
+        "accepts": [], 
+        "alias": "STATUS_WARNING", 
+        "cbg": "F90", 
+        "cfg": "000", 
+        "changed": false, 
+        "children": [], 
+        "code": "20", 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "1223bed3-e193-aeb1-81c0-bd57a2b579ca"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "1223bed3-e193-aeb1-81c0-bd57a2b579ca"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit status code", 
+                    "params": {
+                        "objuuid": "1223bed3-e193-aeb1-81c0-bd57a2b579ca"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }
+        }, 
+        "icon": "/images/status_icon.png", 
+        "name": "Warning", 
+        "objuuid": "1223bed3-e193-aeb1-81c0-bd57a2b579ca", 
+        "parent": "7ae24907-cd1c-629d-3962-9d5ee3431012", 
+        "sbg": "940", 
+        "sfg": "000", 
+        "type": "status"
+    }
+}

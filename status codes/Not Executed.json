@@ -1,0 +1,42 @@
+{
+    "1268d7cc-d214-9088-4a44-ed87d53a81b7": {
+        "abbreviation": "N/E", 
+        "accepts": [], 
+        "alias": "STATUS_NOT_EXECUTED", 
+        "cbg": "FFFFFF", 
+        "cfg": "000000", 
+        "changed": false, 
+        "children": [], 
+        "code": "50", 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "1268d7cc-d214-9088-4a44-ed87d53a81b7"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit status code", 
+                    "params": {
+                        "objuuid": "1268d7cc-d214-9088-4a44-ed87d53a81b7"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }
+        }, 
+        "icon": "/images/status_icon.png", 
+        "name": "Not Executed", 
+        "objuuid": "1268d7cc-d214-9088-4a44-ed87d53a81b7", 
+        "parent": "7ae24907-cd1c-629d-3962-9d5ee3431012", 
+        "sbg": "999999", 
+        "sfg": "000000", 
+        "type": "status"
+    }
+}

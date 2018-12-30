@@ -1,0 +1,42 @@
+{
+    "635e253e-e167-dd6c-b3ea-88515d0c9b26": {
+        "abbreviation": "PASS", 
+        "accepts": [], 
+        "alias": "STATUS_SUCCESS", 
+        "cbg": "0f0", 
+        "cfg": "000", 
+        "changed": false, 
+        "children": [], 
+        "code": "30", 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "635e253e-e167-dd6c-b3ea-88515d0c9b26"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit status code", 
+                    "params": {
+                        "objuuid": "635e253e-e167-dd6c-b3ea-88515d0c9b26"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }
+        }, 
+        "icon": "/images/status_icon.png", 
+        "name": "Success", 
+        "objuuid": "635e253e-e167-dd6c-b3ea-88515d0c9b26", 
+        "parent": "7ae24907-cd1c-629d-3962-9d5ee3431012", 
+        "sbg": "009900", 
+        "sfg": "000000", 
+        "type": "status"
+    }
+}

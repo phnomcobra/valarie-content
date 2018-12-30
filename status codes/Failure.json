@@ -1,0 +1,42 @@
+{
+    "ea8280ca-06c4-a52b-570e-7b52414907c8": {
+        "abbreviation": "FAIL", 
+        "accepts": [], 
+        "alias": "STATUS_FAILURE", 
+        "cbg": "FF0000", 
+        "cfg": "000000", 
+        "changed": false, 
+        "children": [], 
+        "code": "10", 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "ea8280ca-06c4-a52b-570e-7b52414907c8"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit status code", 
+                    "params": {
+                        "objuuid": "ea8280ca-06c4-a52b-570e-7b52414907c8"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }
+        }, 
+        "icon": "/images/status_icon.png", 
+        "name": "Failure", 
+        "objuuid": "ea8280ca-06c4-a52b-570e-7b52414907c8", 
+        "parent": "7ae24907-cd1c-629d-3962-9d5ee3431012", 
+        "sbg": "990000", 
+        "sfg": "000000", 
+        "type": "status"
+    }
+}

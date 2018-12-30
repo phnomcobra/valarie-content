@@ -1,0 +1,42 @@
+{
+    "81a2bab6-d48e-bdaa-eb79-eca0cbc765d4": {
+        "abbreviation": "EXCP", 
+        "accepts": [], 
+        "alias": "STATUS_EXCEPTION", 
+        "cbg": "000000", 
+        "cfg": "FF0000", 
+        "changed": false, 
+        "children": [], 
+        "code": "5", 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "81a2bab6-d48e-bdaa-eb79-eca0cbc765d4"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit status code", 
+                    "params": {
+                        "objuuid": "81a2bab6-d48e-bdaa-eb79-eca0cbc765d4"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }
+        }, 
+        "icon": "/images/status_icon.png", 
+        "name": "Exception", 
+        "objuuid": "81a2bab6-d48e-bdaa-eb79-eca0cbc765d4", 
+        "parent": "7ae24907-cd1c-629d-3962-9d5ee3431012", 
+        "sbg": "000000", 
+        "sfg": "990000", 
+        "type": "status"
+    }
+}
