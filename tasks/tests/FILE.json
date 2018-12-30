@@ -1,0 +1,69 @@
+{
+    "cd36637d-9e13-c584-d802-39a6d9122bda": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def execute(self, cli):\n        try:\n            f = cli.file(\"/tmp/test.txt\", \"w\")\n            \n            f.write(\"Here is a bunch of sadfjklhasdfhjklfasdljhkasfdjhlkafsljhk!\")\n            \n            f.close()\n            \n            f = cli.file(\"/tmp/test.txt\", \"r\")\n            \n            self.output.append(str(f.read()))\n            \n            f.close()\n            \n            \n            self.status = STATUS_SUCCESS\n        except Exception:\n            self.status = STATUS_EXCEPTION\n            self.output.append(traceback.format_exc())\n        \n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "cd36637d-9e13-c584-d802-39a6d9122bda"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "cd36637d-9e13-c584-d802-39a6d9122bda"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "cd36637d-9e13-c584-d802-39a6d9122bda"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "cd36637d-9e13-c584-d802-39a6d9122bda"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "cd36637d-9e13-c584-d802-39a6d9122bda"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [
+            "ee291404-3504-b513-9d99-3e39592be733"
+        ], 
+        "icon": "/images/task_icon.png", 
+        "name": "FILE", 
+        "objuuid": "cd36637d-9e13-c584-d802-39a6d9122bda", 
+        "parent": "60dda918-b930-044d-d234-81dd85d601e6", 
+        "type": "task"
+    }
+}

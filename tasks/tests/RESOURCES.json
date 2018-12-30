@@ -1,0 +1,75 @@
+{
+    "1a464829-6821-04e8-19b0-8706b90ec377": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def execute(self, cli):\n        try:\n            self.status = STATUS_INFORMATION\n            \n            num_cores = 0\n            \n            status, stdout, stderr = cli.system(\"cat /proc/cpuinfo\", return_tuple = True)\n            if status:\n                self.output.append(stderr)\n                self.status = STATUS_FAILURE\n            else:\n                for line in stdout.split(\"\\n\"):\n                    substrs = [x for x in line.split(\" \") if x]\n                    if 'cpu' in substrs and \\\n                       'cores\\t:' in substrs:\n                        num_cores += int(substrs[2])\n            \n            mem = ''\n\n            status, stdout, stderr = cli.system(\"cat /proc/meminfo\", return_tuple = True)\n            if status:\n                self.output.append(stderr)\n                self.status = STATUS_FAILURE\n            else:\n                for line in stdout.split(\"\\n\"):\n                    substrs = [x for x in line.split(\" \") if x]\n                    if 'MemTotal:' in substrs:\n                        mem = substrs[1] + ' ' + substrs[2]\n            \n            self.output.append(\"CPU Cores: {0}\\tMemory: {1}\".format(num_cores, mem))\n            \n            self.status = STATUS_INFORMATION\n        except Exception:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_EXCEPTION\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "1a464829-6821-04e8-19b0-8706b90ec377"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "1a464829-6821-04e8-19b0-8706b90ec377"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "1a464829-6821-04e8-19b0-8706b90ec377"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "1a464829-6821-04e8-19b0-8706b90ec377"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "1a464829-6821-04e8-19b0-8706b90ec377"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [
+            "8c6c7113-2e1d-c721-327a-a273c64150b9", 
+            "619a080c-bd3d-e8b3-7529-c30899350494", 
+            "0e8c9b34-1415-043c-4487-ac3682b46eb8", 
+            "11c570d7-d1ed-570e-765e-819d28907e82", 
+            "6462e662-a7b9-690d-85e3-39dc854e516c", 
+            "5994c594-88eb-7c4a-2e80-4a09e9e9bd93", 
+            "58493119-7474-e27c-8a3e-698d0e98604c"
+        ], 
+        "icon": "/images/task_icon.png", 
+        "name": "RESOURCES", 
+        "objuuid": "1a464829-6821-04e8-19b0-8706b90ec377", 
+        "parent": "60dda918-b930-044d-d234-81dd85d601e6", 
+        "type": "task"
+    }
+}
