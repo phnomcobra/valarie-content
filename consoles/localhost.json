@@ -1,0 +1,57 @@
+{
+    "25242bdb-9db1-e016-35a0-1b5d03cde01d": {
+        "accepts": [], 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "console": "0eae0d80-e7a8-0167-e2bd-0cc276c451bd", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "25242bdb-9db1-e016-35a0-1b5d03cde01d"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "25242bdb-9db1-e016-35a0-1b5d03cde01d"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit host", 
+                    "params": {
+                        "objuuid": "25242bdb-9db1-e016-35a0-1b5d03cde01d"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "terminal": {
+                "action": {
+                    "method": "create terminal", 
+                    "params": {
+                        "objuuid": "25242bdb-9db1-e016-35a0-1b5d03cde01d"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Terminal"
+            }
+        }, 
+        "host": "", 
+        "icon": "/images/host_icon.png", 
+        "name": "localhost", 
+        "objuuid": "25242bdb-9db1-e016-35a0-1b5d03cde01d", 
+        "parent": "77a019d2-06c6-393c-0ce4-28aed233d2c9", 
+        "type": "host"
+    }
+}
