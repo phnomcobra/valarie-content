@@ -1,0 +1,67 @@
+{
+    "bd342253-c16c-79aa-08c6-c5a0e17a8d22": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\nimport json\n\nfrom time import time\n\nfrom valarie.dao.document import Collection\nfrom valarie.model.kvstore import set as set_kv\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def cpu(self, cli):\n        status, stdout, stderr = cli.system(\"cat /proc/loadavg\", return_tuple = True)\n\n        assert status == 0, stdout + stderr\n        \n        substrs = stdout.strip().split(' ')\n        \n        procstats = {\n            \"avg_1\" : float(substrs[0]),\n            \"avg_5\" : float(substrs[1]),\n            \"avg_10\" : float(substrs[2]),\n            \"timestamp\" : time()\n        }\n        \n        set_kv(\"procstats\", procstats)\n        \n        metric = Collection(\"metrics\").get_object()\n        \n        metric.object[\"timestamp\"] = time()\n        metric.object[\"avg_1\"] = float(substrs[0])\n        metric.object[\"avg_5\"] = float(substrs[1])\n        metric.object[\"avg_10\"] = float(substrs[2])\n        metric.object[\"type\"] = \"localhost cpu load\"\n            \n        metric.set()\n        \n        self.output.append(json.dumps(metric.object, indent = 4))\n\n    def execute(self, cli):\n        try:\n            self.cpu(cli)\n            self.status = STATUS_SUCCESS\n        except:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_FAILURE\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "bd342253-c16c-79aa-08c6-c5a0e17a8d22"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "bd342253-c16c-79aa-08c6-c5a0e17a8d22"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "bd342253-c16c-79aa-08c6-c5a0e17a8d22"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "bd342253-c16c-79aa-08c6-c5a0e17a8d22"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "bd342253-c16c-79aa-08c6-c5a0e17a8d22"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [], 
+        "icon": "/images/task_icon.png", 
+        "name": "metric cpu", 
+        "objuuid": "bd342253-c16c-79aa-08c6-c5a0e17a8d22", 
+        "parent": "b5440c18-593b-ec1c-a34c-e640ca529d59", 
+        "type": "task"
+    }
+}

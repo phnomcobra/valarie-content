@@ -1,0 +1,69 @@
+{
+    "c9a40556-7b94-6edb-4e5e-1b4869dd254a": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\nimport json\n\nfrom time import strftime, localtime\n\nfrom valarie.dao.document import Collection\n\nchart_page_1 = \"\"\"<div style=\"width:inherit;height:calc(100vh - 250px);\">\n    <img src=\"/images/throbber.gif\" onload='\n        var chart;\n        var graph;\n            \n        chart = new AmCharts.AmSerialChart();\n\n        chart.dataProvider = \"\"\"\nchart_page_2 = \"\"\";\n        chart.marginLeft = 10;\n        chart.categoryField = \"datetime\";\n        chart.dataDateFormat = \"YYYY/MM/DD JJ:NN\";\n        \n        chart.synchronizeGrid = true; // this makes all axes grid to be at the same intervals\n        \n        chart[\"export\"] = {\"enabled\" : true};\n        \n        chart[\"titles\"] = [{\"text\" : \"Localhost Object Usage\"}];\n        \n        // AXES\n        // category\n        var categoryAxis = chart.categoryAxis;\n        categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true\n        categoryAxis.minPeriod = \"mm\"; // our data is yearly, so we set minPeriod to YYYY\n        categoryAxis.dashLength = 3;\n        categoryAxis.minorGridEnabled = true;\n        categoryAxis.minorGridAlpha = 0.1;\n        categoryAxis.twoLineMode = true;\n        categoryAxis.title = \"Time\";\n\n        // value\n        var valueAxis1 = new AmCharts.ValueAxis();\n        valueAxis1.axisThickness = 2;\n        valueAxis1.title = \"Size (KB)\";\n        chart.addValueAxis(valueAxis1);\n        \n        var valueAxis2 = new AmCharts.ValueAxis();\n        valueAxis2.axisThickness = 2;\n        valueAxis2.title = \"Objects\";\n        valueAxis2.offset = 100;\n        chart.addValueAxis(valueAxis2);\n        \n        var valueAxis3 = new AmCharts.ValueAxis();\n        valueAxis3.axisThickness = 2;\n        valueAxis3.title = \"Obj/Sec\";\n        valueAxis3.offset = 200;\n        chart.addValueAxis(valueAxis3);\n        \n        // GRAPH\n        graph = new AmCharts.AmGraph();\n        graph.valueAxis = valueAxis1;\n        graph.valueField = \"KB\";\n        graph.title = \"Size (KB)\";\n        graph.lineThickness = 2;\n        chart.addGraph(graph);\n        \n        graph = new AmCharts.AmGraph();\n        graph.valueAxis = valueAxis2;\n        graph.valueField = \"num objects\";\n        graph.title = \"Objects\";\n        graph.lineThickness = 2;\n        chart.addGraph(graph);\n        \n        graph = new AmCharts.AmGraph();\n        graph.valueAxis = valueAxis3;\n        graph.valueField = \"num writes\";\n        graph.title = \"Writes\";\n        graph.lineThickness = 2;\n        chart.addGraph(graph);\n        \n        graph = new AmCharts.AmGraph();\n        graph.valueAxis = valueAxis3;\n        graph.valueField = \"num reads\";\n        graph.title = \"Reads\";\n        graph.lineThickness = 2;\n        chart.addGraph(graph);\n        \n        // CURSOR\n        var chartCursor = new AmCharts.ChartCursor();\n        chartCursor.cursorAlpha = 0.1;\n        chartCursor.fullWidth = true;\n        chartCursor.valueLineBalloonEnabled = true;\n        chartCursor.categoryBalloonDateFormat = \"YYYY/MM/DD JJ:NN\";\n        chart.addChartCursor(chartCursor);\n\n        // SCROLLBAR\n        var chartScrollbar = new AmCharts.ChartScrollbar();\n        chart.addChartScrollbar(chartScrollbar);\n        \n        // LEGEND\n        var legend = new AmCharts.AmLegend();\n        legend.marginLeft = 110;\n        legend.useGraphSettings = true;\n        chart.addLegend(legend);\n        \n        // WRITE\n        chart.write(this.parentNode);\n    '>\n</div>\"\"\"\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def execute(self, cli):\n        try:\n            grid_data = []\n            \n            metrics = Collection(\"metrics\")\n            \n            for mtruuid in metrics.find_objuuids(type = \"sql objects\"):\n                metric = metrics.get_object(mtruuid)\n                \n                grid_data.append({\"timestamp\" : metric.object[\"timestamp\"], \\\n                                  \"datetime\" : strftime('%Y-%m-%d %H:%M:%S', localtime(int(metric.object[\"timestamp\"]))), \\\n                                  \"KB\" : int(metric.object[\"KB\"]), \\\n                                  \"num objects\" : int(metric.object[\"num objects\"]), \\\n                                  \"num writes\" : int(metric.object[\"num writes\"]), \\\n                                  \"num reads\" : int(metric.object[\"num reads\"])})\n                \n            # Insertion sort by dictionary key \"timestamp\"\n            for i in range(0, len(grid_data)):\n                for j in range(i, len(grid_data)):\n                    if int(grid_data[i][\"timestamp\"]) > int(grid_data[j][\"timestamp\"]):\n                        grid_data[i], grid_data[j] = grid_data[j], grid_data[i]\n            \n            # Normalize writes and reads\n            for i in range(1, len(grid_data)):\n                et = grid_data[i][\"timestamp\"] - grid_data[i - 1][\"timestamp\"]\n                \n                grid_data[i][\"num writes\"] = round(float(grid_data[i][\"num writes\"]) / et, 3)\n                grid_data[i][\"num reads\"] = round(float(grid_data[i][\"num reads\"]) / et, 3)\n            \n            grid_data[0][\"num writes\"] = 0    \n            grid_data[0][\"num reads\"] = 0\n                \n            self.output.append(chart_page_1 + json.dumps(grid_data) + chart_page_2)\n            \n            self.status = STATUS_INFORMATION\n        except Exception:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_EXCEPTION\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "c9a40556-7b94-6edb-4e5e-1b4869dd254a"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "c9a40556-7b94-6edb-4e5e-1b4869dd254a"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "c9a40556-7b94-6edb-4e5e-1b4869dd254a"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "c9a40556-7b94-6edb-4e5e-1b4869dd254a"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "c9a40556-7b94-6edb-4e5e-1b4869dd254a"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [
+            "25242bdb-9db1-e016-35a0-1b5d03cde01d"
+        ], 
+        "icon": "/images/task_icon.png", 
+        "name": "Display Localhost SQL Objects Metrics", 
+        "objuuid": "c9a40556-7b94-6edb-4e5e-1b4869dd254a", 
+        "parent": "1dd45b8b-eeca-4240-3960-868ad6adc556", 
+        "type": "task"
+    }
+}

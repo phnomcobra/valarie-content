@@ -1,0 +1,67 @@
+{
+    "9e955082-0948-c80a-6a54-6c9035352aa2": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\n\nfrom valarie.dao.document import Collection\nfrom time import time\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n        self.MAX_AGE = 60 * 60 * 24\n    \n    def cleanup(self):\n        current_time = time()\n        \n        metrics = Collection(\"metrics\")\n        \n        for mtruuid in metrics.list_objuuids():\n            metric = metrics.get_object(mtruuid)\n            \n            try:\n                if current_time - metric.object[\"timestamp\"] > self.MAX_AGE:\n                    metric.destroy()\n            except:\n                metric.destroy()\n\n    def execute(self, cli):\n        try:\n            self.cleanup()\n            self.status = STATUS_SUCCESS\n        except:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_FAILURE\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "9e955082-0948-c80a-6a54-6c9035352aa2"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "9e955082-0948-c80a-6a54-6c9035352aa2"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "9e955082-0948-c80a-6a54-6c9035352aa2"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "9e955082-0948-c80a-6a54-6c9035352aa2"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "9e955082-0948-c80a-6a54-6c9035352aa2"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [], 
+        "icon": "/images/task_icon.png", 
+        "name": "metric cleanup", 
+        "objuuid": "9e955082-0948-c80a-6a54-6c9035352aa2", 
+        "parent": "b5440c18-593b-ec1c-a34c-e640ca529d59", 
+        "type": "task"
+    }
+}

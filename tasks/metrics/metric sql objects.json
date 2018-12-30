@@ -1,0 +1,67 @@
+{
+    "33554b02-7600-8523-079a-2ee61939ab50": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\nimport json\n\nfrom time import time\n\nfrom valarie.executor.counters import get as get_count, \\\n                                      set as set_count\nfrom valarie.dao.document import Collection, \\\n                                 Document\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def database(self, cli):\n        status, stdout, stderr = cli.system(\"du -BK db.sqlite\", return_tuple = True)\n        \n        assert status == 0, stdout + stderr\n        \n        db_size_k = int(stdout.split(\"K\")[0])\n        db_size_o = len(Document().list_objects())\n        \n        metric = Collection(\"metrics\").get_object()\n        \n        metric.object[\"timestamp\"] = time()\n        metric.object[\"KB\"] = db_size_k\n        metric.object[\"num objects\"] = db_size_o\n        metric.object[\"num writes\"] = get_count(\"sql object writes\")\n        metric.object[\"num reads\"] = get_count(\"sql object reads\")\n        metric.object[\"type\"] = \"sql objects\"\n        \n        set_count(\"sql object writes\", 0)\n        set_count(\"sql object reads\", 0)\n            \n        metric.set()\n        \n        self.output.append(json.dumps(metric.object, indent = 4))\n    \n    def execute(self, cli):\n        try:\n            self.database(cli)\n            self.status = STATUS_SUCCESS\n        except:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_FAILURE\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "33554b02-7600-8523-079a-2ee61939ab50"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "33554b02-7600-8523-079a-2ee61939ab50"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "33554b02-7600-8523-079a-2ee61939ab50"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "33554b02-7600-8523-079a-2ee61939ab50"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "33554b02-7600-8523-079a-2ee61939ab50"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [], 
+        "icon": "/images/task_icon.png", 
+        "name": "metric sql objects", 
+        "objuuid": "33554b02-7600-8523-079a-2ee61939ab50", 
+        "parent": "b5440c18-593b-ec1c-a34c-e640ca529d59", 
+        "type": "task"
+    }
+}

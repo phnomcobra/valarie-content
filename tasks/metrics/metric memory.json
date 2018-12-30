@@ -1,0 +1,67 @@
+{
+    "eaad664d-ec7d-43d3-9c25-abe41922304a": {
+        "accepts": [], 
+        "body": "#!/usr/bin/python\n\nimport traceback\nimport json\n\nfrom time import time\n\nfrom valarie.dao.document import Collection\n\nclass Task:\n    def __init__(self):\n        self.output = []\n        self.status = STATUS_NOT_EXECUTED\n\n    def memory(self, cli):\n        metric = Collection(\"metrics\").get_object()\n\n        try:\n            status, stdout, stderr = cli.system(\"free -m\", return_tuple = True)\n            \n            lines = str(stdout).split(\"\\n\") \n                            \n            field_names = [x for x in lines[0].split(\" \") if x]\n            mem_fields = [x for x in lines[1].split(\" \") if x][1:]\n            swap_fields = [x for x in lines[2].split(\" \") if x][1:]\n            \n            metric.object = {\n                \"mem\" : {},\n                \"swap\" : {},\n                \"timestamp\" : time(),\n                \"type\" : \"localhost memory\"\n            }\n                            \n            for i, f in enumerate(mem_fields):\n                metric.object[\"mem\"][field_names[i]] = int(f)\n                            \n            for i, f in enumerate(swap_fields):\n                metric.object[\"swap\"][field_names[i]] = int(f)\n            \n            metric.set()\n        except Exception as e:\n            metric.destroy()\n            \n            raise(e)\n        \n        self.output.append(json.dumps(metric.object, indent = 4))\n\n    def execute(self, cli):\n        try:\n            self.memory(cli)\n            self.status = STATUS_SUCCESS\n        except:\n            self.output.append(traceback.format_exc())\n            self.status = STATUS_FAILURE\n\n        return self.status", 
+        "changed": false, 
+        "children": [], 
+        "coluuid": "b39c6734-5409-8aed-e945-72e783dc42ec", 
+        "context": {
+            "copy": {
+                "action": {
+                    "method": "copy node", 
+                    "params": {
+                        "objuuid": "eaad664d-ec7d-43d3-9c25-abe41922304a"
+                    }, 
+                    "route": "inventory/ajax_copy_object"
+                }, 
+                "label": "Copy"
+            }, 
+            "delete": {
+                "action": {
+                    "method": "delete node", 
+                    "params": {
+                        "objuuid": "eaad664d-ec7d-43d3-9c25-abe41922304a"
+                    }, 
+                    "route": "inventory/ajax_delete"
+                }, 
+                "label": "Delete"
+            }, 
+            "edit": {
+                "action": {
+                    "method": "edit task", 
+                    "params": {
+                        "objuuid": "eaad664d-ec7d-43d3-9c25-abe41922304a"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit"
+            }, 
+            "edit hosts": {
+                "action": {
+                    "method": "edit task hosts", 
+                    "params": {
+                        "objuuid": "eaad664d-ec7d-43d3-9c25-abe41922304a"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Edit Hosts"
+            }, 
+            "run": {
+                "action": {
+                    "method": "run task", 
+                    "params": {
+                        "objuuid": "eaad664d-ec7d-43d3-9c25-abe41922304a"
+                    }, 
+                    "route": "inventory/ajax_get_object"
+                }, 
+                "label": "Run"
+            }
+        }, 
+        "hosts": [], 
+        "icon": "/images/task_icon.png", 
+        "name": "metric memory", 
+        "objuuid": "eaad664d-ec7d-43d3-9c25-abe41922304a", 
+        "parent": "b5440c18-593b-ec1c-a34c-e640ca529d59", 
+        "type": "task"
+    }
+}
