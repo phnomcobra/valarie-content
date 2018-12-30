@@ -6,7 +6,7 @@ backend is based on CherryPy and is written entirely in Python.
 
 # ValARIE Content
 
-This repository is for putting inventory objects under source control. The JSON files are directly importable into the ValARIE's inventory while the .py files are the unescaped code bodies for consoles and tasks.
+This repository is for putting inventory objects under source control. 
 
 ## Usage
 
