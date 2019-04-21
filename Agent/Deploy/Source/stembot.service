@@ -1,0 +1,13 @@
+[Unit]
+Description=STEMBot Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/stembot
+ExecStart=/opt/stembot/server
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

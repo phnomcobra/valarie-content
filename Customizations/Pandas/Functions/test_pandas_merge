@@ -1,0 +1,26 @@
+#!/usr/bin/python
+
+from pandas import DataFrame, Series
+from random import randrange
+from time import time
+
+def execute(event, context):
+    
+    df_a = DataFrame(columns = ['id', 'a value', 'c value'])
+    
+    df_b = DataFrame(columns = ['id', 'b value', 'c value'])
+    
+    for i in range(1000):
+        s = Series([i, randrange(0, 10, 1), randrange(0, 1000, 1)], index = ['id', 'a value', 'c value'])
+        
+        df_a.append(s, ignore_index = True)
+        
+        s = Series([i, randrange(0, 10, 1), randrange(0, 1000, 1)], index = ['id', 'b value', 'c value'])
+        
+        df_b.append(s, ignore_index = True)
+    
+    st = time()
+    
+    df_ab = df_a.merge(df_b, on = "id")
+    
+    return [time() - st, df_a.shape]

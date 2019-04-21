@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+from stembot.document import Collection
+
+def execute(event, context):
+    collection = Collection(event["collection name"])
+    
+    c = 0
+        
+    for objuuid in collection.find_objuuids(**event["query"]):
+        c = c + 1
+    
+    return c

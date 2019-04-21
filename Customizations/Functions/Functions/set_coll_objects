@@ -1,0 +1,26 @@
+#!/usr/bin/python
+
+from stembot.document import Collection
+
+def execute(event, context):
+    assert "collection name" in event, "collection name key missing from event object!"
+    
+    collection = Collection(event["collection name"])
+    
+    assert "objects" in event, "objects key missing from event object!"
+    
+    assert type(event["objects"]) == type([]), "objects key must be a list!"
+    
+    for object in event["objects"]:
+        assert type(object) == type({}), "object item must be a dict!"
+    
+    for object in event["objects"]:
+        if "objuuid" in object:
+            new = collection.get_object(str(object["objuuid"]))
+        else:
+            new = collection.get_object()
+        
+        new.object = object
+        new.set()
+        
+    return event["objects"]

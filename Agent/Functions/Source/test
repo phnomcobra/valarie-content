@@ -1,0 +1,16 @@
+#!/usr/bin/python
+################################################################################
+# AGENT TEST FUNCTION
+# 
+# Justin Dierking
+# justin.l.dierking.civ@mail.mil
+# (614) 692 2050
+#
+# 01/23/2018 Original construction
+################################################################################
+
+from stembot.agentint import Console
+
+def execute(event, context):
+    cli = Console()
+    return cli.system("hostname")
